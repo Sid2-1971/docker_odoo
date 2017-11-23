@@ -4,6 +4,7 @@ MAINTAINER Sidnei Brianti <scbrianti@gmailcom>
 # Exporta usuarios
 ENV USER odoo
 ENV PASSWORD odoo
+ENV DEBIAN_FRONTEND noninteractive
 
 # Configura localizacao
 RUN locale-gen pt_BR.UTF-8
