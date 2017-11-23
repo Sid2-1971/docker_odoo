@@ -69,19 +69,11 @@ USER root
 RUN pip install --upgrade pip \
     && pip install -r /opt/odoo/server/requirements.txt \
     && pip install -r /opt/odoo/addons/reporting-engine/requirements.txt \
-    && pip install -r /opt/odoo/addons/l10n-brazil/requirements.txt \
-    && dpkg -i /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb \
-    && cp /usr/local/bin/wkhtmltopdf /usr/bin \
-    && cp /usr/local/bin/wkhtmltoimage /usr/bin \
-    && apt-get install -y npm \
-    && ln -s /usr/bin/nodejs /usr/bin/node \
-    && npm install -g less less-plugin-clean-css 
-
+    && pip install -r /opt/odoo/addons/l10n-brazil/requirements.txt
 
 # Install systemd script
 #ADD systemd-odoo.conf /etc/init.d/odoo
 #RUN update-rc.d -f odoo defaults
-
 
 
 # Install supervisor
