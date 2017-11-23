@@ -57,19 +57,20 @@ WORKDIR /opt/odoo/
 RUN git clone https://github.com/OCA/OCB.git --depth 1 --branch 10.0 --single-branch server
 
 WORKDIR /opt/odoo/addons
-RUN git clone https://github.com/OCA/server-tools.git --depth 1 --branch 10.0 \
-    && git clone https://github.com/OCA/account-fiscal-rule.git --depth 1 --branch 10.0 \
-    && git clone https://github.com/OCA/reporting-engine.git --depth 1 --branch 10.0 \
-    && git clone https://github.com/OCA/l10n-brazil.git --depth 1 --branch 10.0 \
-    && git clone https://github.com/Openworx/backend_theme.git --depth 1 --branch 10.0 \
-    && git clone https://github.com/OCA/web.git --depth 1 --branch 10.0
+RUN git clone https://github.com/OCA/server-tools.git --depth 1 --branch 10.0 
+    #&& git clone https://github.com/OCA/account-fiscal-rule.git --depth 1 --branch 10.0 \
+    #&& git clone https://github.com/OCA/reporting-engine.git --depth 1 --branch 10.0 \
+    #&& git clone https://github.com/OCA/l10n-brazil.git --depth 1 --branch 10.0 \
+    #&& git clone https://github.com/Openworx/backend_theme.git --depth 1 --branch 10.0 \
+    #&& git clone https://github.com/OCA/web.git --depth 1 --branch 10.0
 
 # Instala pips requerimentos
 USER root
 RUN pip install --upgrade pip \
-    && pip install -r /opt/odoo/server/requirements.txt \
-    && pip install -r /opt/odoo/addons/reporting-engine/requirements.txt \
-    && pip install -r /opt/odoo/addons/l10n-brazil/requirements.txt
+    && pip install -r /tmp/requirements.txt \
+    && pip install -r /opt/odoo/server/requirements.txt 
+    #&& pip install -r /opt/odoo/addons/reporting-engine/requirements.txt \
+    #&& pip install -r /opt/odoo/addons/l10n-brazil/requirements.txt
 
 # Install systemd script
 #ADD systemd-odoo.conf /etc/init.d/odoo
