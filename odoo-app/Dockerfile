@@ -6,40 +6,31 @@ ENV USER odoo
 ENV PASSWORD odoo
 
 
-# Instala pacotes basicos
+# Instala pacotes
 ADD apt_prerequisito_odoo.pgks requirements.txt wkhtmltox-0.12.1_linux-trusty-amd64.deb /tmp/
 RUN apt-get -qq update \
-    && apt-get install -y -q $(cat /tmp/apt_prerequisito_odoo.pgks)\
+    && apt-get install -y -q $(cat /tmp/apt_prerequisito_odoo.pgks) \
     && dpkg -i /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb \
     && cp /usr/local/bin/wkhtmltopdf /usr/bin \
     && cp /usr/local/bin/wkhtmltoimage /usr/bin \
-    && apt-get -y install -f --no-install-recommends \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false \
     && npm install -g less less-plugin-clean-css \
     && apt-get clean \
-    && ln -s /usr/bin/nodejs /usr/bin/node 
-   
-
-# Configura localizacao
-RUN locale-gen pt_BR.UTF-8 \
-    && update-locale LANG=pt_BR.UTF-8
-
-# Install ntp e configura localizacao
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q ntp \
+    && ln -s /usr/bin/nodejs /usr/bin/node \
     && echo "server a.ntp.br" >> /etc/ntp.conf \
     && echo "server b.ntp.br" >> /etc/ntp.conf \
     && echo "server c.ntp.br" >> /etc/ntp.conf \
     && ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime \
     && echo "America/Sao_Paulo" > /etc/timezone \
-    && dpkg-reconfigure -f noninteractive tzdata
-
-# Configura ssh
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q openssh-server \
+    && dpkg-reconfigure -f noninteractive tzdata \
+    && locale-gen pt_BR.UTF-8 \
+    && update-locale LANG=pt_BR.UTF-8 \
+    && apt-get -y install -f --no-install-recommends \
     && mkdir /var/run/sshd \
     && echo 'root:12345678' |chpasswd \
     && sed -i "s/PermitRootLogin without-password/PermitRootLogin yes/g" /etc/ssh/sshd_config \
-    && echo "HISTTIMEFORMAT='|  $USER  |  %F  |  %H:%M:%S  |  '" >> /root/.bashrc
-
+    && echo "HISTTIMEFORMAT='|  $USER  |  %F  |  %H:%M:%S  |  '" >> /root/.bashrc \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false \
+    && apt-get clean 
 
 # Adiciona user e baixa repositorios
 RUN adduser --system --home=/opt/odoo --group odoo
