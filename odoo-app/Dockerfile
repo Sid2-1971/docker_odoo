@@ -28,7 +28,7 @@ RUN dpkg-reconfigure -f noninteractive tzdata
 # Configura ssh
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q openssh-server
 RUN mkdir /var/run/sshd
-RUN echo 'root:zayth123' |chpasswd
+RUN echo 'root:12345678' |chpasswd
 RUN sed -i "s/PermitRootLogin without-password/PermitRootLogin yes/g" /etc/ssh/sshd_config
 RUN echo "HISTTIMEFORMAT='|  $USER  |  %F  |  %H:%M:%S  |  '" >> /root/.bashrc
 
