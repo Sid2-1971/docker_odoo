@@ -14,7 +14,7 @@ RUN apt-get -qq update \
     && cp /usr/local/bin/wkhtmltopdf /usr/bin \
     && cp /usr/local/bin/wkhtmltoimage /usr/bin \
     && apt-get -y install -f --no-install-recommends \
-    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false npm \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false \
     && npm install -g less less-plugin-clean-css \
     && apt-get clean \
     && ln -s /usr/bin/nodejs /usr/bin/node 
