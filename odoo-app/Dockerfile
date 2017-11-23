@@ -10,13 +10,9 @@ RUN locale-gen pt_BR.UTF-8
 RUN update-locale LANG=pt_BR.UTF-8
 
 # Instala pacotes basicos
-ADD apt_defaults.pgks /tmp/apt_defaults.pgks
+ADD apt_prerequisito_odoo.pgks /tmp/apt_prerequisito_odoo.pgks
 RUN apt-get -qq update
 RUN apt-get -qq dist-upgrade
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q $(cat /tmp/apt_defaults.pgks)
-
-# Instala requisitos apt
-ADD apt_prerequisito_odoo.pgks /tmp/apt_prerequisito_odoo.pgks
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q $(cat /tmp/apt_prerequisito_odoo.pgks)
 
 # Install ntp e configura localizacao
