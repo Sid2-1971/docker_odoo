@@ -42,7 +42,7 @@ RUN mkdir /opt/odoo/addons
 #RUN mkdir /opt/odoo/etc
 #RUN mkdir /opt/odoo/local
 #RUN mkdir /opt/odoo/local/sped
-ADD odoo8.cfg /opt/odoo/etc/odoo8.cfg
+#ADD odoo8.cfg /opt/odoo/etc/odoo8.cfg
 
 WORKDIR /opt/odoo/
 RUN git clone https://github.com/OCA/OCB.git --depth 1 --branch 10.0 --single-branch server
@@ -64,11 +64,16 @@ RUN pip install -r /opt/odoo/server/requirements.txt
 RUN pip install -r /opt/odoo/addons/reporting-engine/requirements.txt
 RUN pip install -r /opt/odoo/addons/l10n-brazil/requirements.txt
 RUN dpkg -i /tmp/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb
+RUN cp wkhtmltox/lib/* /usr/local/lib/ 
+RUN cp wkhtmltox/bin/* /usr/local/bin/
+RUN apt-get install -y npm
+RUN ln -s /usr/bin/nodejs /usr/bin/node
+RUN npm install -g less less-plugin-clean-css
 
 
 # Install systemd script
-ADD systemd-odoo.conf /etc/init.d/odoo
-RUN update-rc.d -f odoo defaults
+#ADD systemd-odoo.conf /etc/init.d/odoo
+#RUN update-rc.d -f odoo defaults
 
 # Instalar NGinx
 #RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q nginx
@@ -81,6 +86,6 @@ RUN update-rc.d -f odoo defaults
 
 # Configura volume e port
 VOLUME ["/opt/odoo"]
-EXPOSE 80
+EXPOSE 8069
 
 #CMD ["/usr/bin/supervisord"]
