@@ -4,13 +4,22 @@ MAINTAINER Sidnei Brianti <scbrianti@gmailcom>
 # Exporta usuarios
 ENV USER odoo
 ENV PASSWORD odoo
-ENV DEBIAN_FRONTEND noninteractive
+
 
 # Instala pacotes basicos
 ADD apt_prerequisito_odoo.pgks requirements.txt wkhtmltox-0.12.1_linux-trusty-amd64.deb /tmp/
 RUN apt-get -qq update \
     && apt-get -qq dist-upgrade \
-    && DEBIAN_FRONTEND=noninteractive apt-get install -y -q $(cat /tmp/apt_prerequisito_odoo.pgks)
+    && apt-get install -y -q $(cat /tmp/apt_prerequisito_odoo.pgks)\
+    && dpkg -i /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb \
+    && cp /usr/local/bin/wkhtmltopdf /usr/bin \
+    && cp /usr/local/bin/wkhtmltoimage /usr/bin \
+    && apt-get -y install -f --no-install-recommends \
+    && apt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false -o APT::AutoRemove::SuggestsImportant=false npm \
+    && npm install -g less less-plugin-clean-css \
+    && apt-get clean \
+    && ln -s /usr/bin/nodejs /usr/bin/node 
+   
 
 # Configura localizacao
 RUN locale-gen pt_BR.UTF-8 \
@@ -57,10 +66,8 @@ RUN git clone https://github.com/OCA/server-tools.git --depth 1 --branch 10.0 \
 
 # Instala pips requerimentos
 USER root
-WORKDIR /tmp
-#ADD requirements.txt /tmp/requirements.txt
-#ADD wkhtmltox-0.12.1_linux-trusty-amd64.deb /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb
-RUN pip install -r /opt/odoo/server/requirements.txt \
+RUN pip install --upgrade pip \
+    && pip install -r /opt/odoo/server/requirements.txt \
     && pip install -r /opt/odoo/addons/reporting-engine/requirements.txt \
     && pip install -r /opt/odoo/addons/l10n-brazil/requirements.txt \
     && dpkg -i /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb \
@@ -75,10 +82,7 @@ RUN pip install -r /opt/odoo/server/requirements.txt \
 #ADD systemd-odoo.conf /etc/init.d/odoo
 #RUN update-rc.d -f odoo defaults
 
-# Instalar NGinx
-#RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q nginx
-#ADD nginx-odoo /etc/nginx/sites-enabled/nginx-odoo
-#RUN rm -rf /etc/nginx/sites-enabled/default
+
 
 # Install supervisor
 #RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q supervisor
