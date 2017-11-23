@@ -1,5 +1,5 @@
-FROM ubuntu:14.04
-MAINTAINER Leandro Augusto <leandro@zaytech.com.br>
+FROM ubuntu:16.04
+MAINTAINER Sidnei Brianti <scbrianti@gmailcom>
 
 # Exporta usuarios
 ENV USER odoo
@@ -42,25 +42,22 @@ RUN adduser --system --home=/opt/odoo --group odoo
 
 USER odoo
 RUN mkdir /opt/odoo/addons
-RUN mkdir /opt/odoo/addons/outros
-RUN mkdir /opt/odoo/etc
-RUN mkdir /opt/odoo/local
-RUN mkdir /opt/odoo/local/sped
+#RUN mkdir /opt/odoo/addons/outros
+#RUN mkdir /opt/odoo/etc
+#RUN mkdir /opt/odoo/local
+#RUN mkdir /opt/odoo/local/sped
 ADD odoo8.cfg /opt/odoo/etc/odoo8.cfg
 
 WORKDIR /opt/odoo/
-RUN git clone https://github.com/OCA/OCB -b 8.0 --depth 1 server
+RUN git clone https://github.com/OCA/OCB.git --depth 1 --branch 10.0 --single-branch server
 
 WORKDIR /opt/odoo/addons
-RUN git clone https://github.com/OCA/server-tools -b 8.0 --depth 1
-RUN git clone https://github.com/odoo-brazil/account-fiscal-rule.git -b 8.0 --depth 1
-RUN git clone https://github.com/odoo-brazil/l10n-brazil.git -b 8.0 --depth 1
-RUN git clone https://github.com/odoo-brazil/odoo-brazil-eletronic-documents -b 8.0 --depth 1
-RUN git clone https://github.com/Trust-Code/trust-addons -b 8.0 --depth 1
-RUN git clone https://github.com/odoo-brazil/odoo-brazil-hr.git -b 8.0 --depth 1
-RUN git clone https://github.com/kmee/odoo-brazil-banking.git -b feature/boleto-sem-registro-pyboleto --depth 1
-WORKDIR /opt/odoo/addons/outros
-RUN git clone https://github.com/wagnerpereirasp/bgi-viacep.git --depth 1 
+RUN git clone https://github.com/OCA/server-tools.git --depth 1 --branch 10.0
+RUN git clone https://github.com/OCA/account-fiscal-rule.git --depth 1 --branch 10.0
+RUN git clone https://github.com/OCA/reporting-engine.git --depth 1 --branch 10.0
+RUN git clone https://github.com/OCA/l10n-brazil.git --depth 1 --branch 10.0
+RUN git clone https://github.com/Openworx/backend_theme.git --depth 1 --branch 10.0
+RUN git clone https://github.com/OCA/web.git --depth 1 --branch 10.0
 
 # Instala pips requerimentos
 USER root
@@ -77,16 +74,16 @@ ADD systemd-odoo.conf /etc/init.d/odoo
 RUN update-rc.d -f odoo defaults
 
 # Instalar NGinx
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q nginx
-ADD nginx-odoo /etc/nginx/sites-enabled/nginx-odoo
-RUN rm -rf /etc/nginx/sites-enabled/default
+#RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q nginx
+#ADD nginx-odoo /etc/nginx/sites-enabled/nginx-odoo
+#RUN rm -rf /etc/nginx/sites-enabled/default
 
 # Install supervisor
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q supervisor
-ADD supervisord.conf /etc/supervisor/conf.d/
+#RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q supervisor
+#ADD supervisord.conf /etc/supervisor/conf.d/
 
 # Configura volume e port
 VOLUME ["/opt/odoo"]
 EXPOSE 80
 
-CMD ["/usr/bin/supervisord"]
+#CMD ["/usr/bin/supervisord"]
