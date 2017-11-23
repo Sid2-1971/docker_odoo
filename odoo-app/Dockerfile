@@ -68,7 +68,7 @@ RUN pip install -r /opt/odoo/server/requirements.txt \
     && cp /usr/local/bin/wkhtmltoimage /usr/bin \
     && apt-get install -y npm \
     && ln -s /usr/bin/nodejs /usr/bin/node \
-    && npm install -g less less-plugin-clean-css \
+    && npm install -g less less-plugin-clean-css 
 
 
 # Install systemd script
