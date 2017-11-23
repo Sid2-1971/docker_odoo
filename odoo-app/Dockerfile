@@ -7,7 +7,7 @@ ENV PASSWORD odoo
 ENV DEBIAN_FRONTEND noninteractive
 
 # Instala pacotes basicos
-ADD apt_prerequisito_odoo.pgks /tmp/apt_prerequisito_odoo.pgks
+ADD apt_prerequisito_odoo.pgks requirements.txt wkhtmltox-0.12.1_linux-trusty-amd64.deb /tmp/
 RUN apt-get -qq update
 RUN apt-get -qq dist-upgrade
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q $(cat /tmp/apt_prerequisito_odoo.pgks)
@@ -59,8 +59,8 @@ RUN git clone https://github.com/OCA/web.git --depth 1 --branch 10.0
 # Instala pips requerimentos
 USER root
 WORKDIR /tmp
-ADD requirements.txt /tmp/requirements.txt
-ADD wkhtmltox-0.12.1_linux-trusty-amd64.deb /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb
+#ADD requirements.txt /tmp/requirements.txt
+#ADD wkhtmltox-0.12.1_linux-trusty-amd64.deb /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb
 RUN pip install -r /opt/odoo/server/requirements.txt
 RUN pip install -r /opt/odoo/addons/reporting-engine/requirements.txt
 RUN pip install -r /opt/odoo/addons/l10n-brazil/requirements.txt
