@@ -60,7 +60,7 @@ RUN git clone https://github.com/OCA/web.git --depth 1 --branch 10.0
 USER root
 WORKDIR /tmp
 ADD requirements.txt /tmp/requirements.txt
-ADD wkhtmltox-0.12.2.1_linux-trusty-amd64.deb /tmp/wkhtmltox-0.12.2.1_linux-trusty-amd64.deb
+ADD wkhtmltox-0.12.1_linux-trusty-amd64.deb /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb
 RUN pip install -r /opt/odoo/server/requirements.txt
 RUN pip install -r /opt/odoo/addons/reporting-engine/requirements.txt
 RUN pip install -r /opt/odoo/addons/l10n-brazil/requirements.txt
