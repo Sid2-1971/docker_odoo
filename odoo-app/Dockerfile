@@ -9,7 +9,6 @@ ENV PASSWORD odoo
 # Instala pacotes basicos
 ADD apt_prerequisito_odoo.pgks requirements.txt wkhtmltox-0.12.1_linux-trusty-amd64.deb /tmp/
 RUN apt-get -qq update \
-    && apt-get -qq dist-upgrade \
     && apt-get install -y -q $(cat /tmp/apt_prerequisito_odoo.pgks)\
     && dpkg -i /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb \
     && cp /usr/local/bin/wkhtmltopdf /usr/bin \
