@@ -58,3 +58,5 @@ libc6
 locales
 git
 npm
+ntp
+openssh-server
