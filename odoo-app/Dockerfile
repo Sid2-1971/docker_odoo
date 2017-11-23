@@ -6,15 +6,15 @@ ENV USER odoo
 ENV PASSWORD odoo
 ENV DEBIAN_FRONTEND noninteractive
 
-# Configura localizacao
-RUN locale-gen pt_BR.UTF-8
-RUN update-locale LANG=pt_BR.UTF-8
-
 # Instala pacotes basicos
 ADD apt_prerequisito_odoo.pgks /tmp/apt_prerequisito_odoo.pgks
 RUN apt-get -qq update
 RUN apt-get -qq dist-upgrade
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q $(cat /tmp/apt_prerequisito_odoo.pgks)
+
+# Configura localizacao
+RUN locale-gen pt_BR.UTF-8
+RUN update-locale LANG=pt_BR.UTF-8
 
 # Install ntp e configura localizacao
 RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q ntp
