@@ -67,8 +67,7 @@ RUN pip install --upgrade pip \
     && cp /usr/local/bin/wkhtmltopdf /usr/bin \
     && cp /usr/local/bin/wkhtmltoimage /usr/bin \
     && ln -s /usr/bin/nodejs /usr/bin/node \
-    && npm install -g less less-plugin-clean-css \
-    && rm /tmp/*
+    && npm install -g less less-plugin-clean-css
 
 
 # Install systemd script
