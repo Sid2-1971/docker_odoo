@@ -17,7 +17,6 @@ RUN locale-gen pt_BR.UTF-8
 RUN update-locale LANG=pt_BR.UTF-8
 
 # Install ntp e configura localizacao
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q ntp
 RUN echo "server a.ntp.br" >> /etc/ntp.conf
 RUN echo "server b.ntp.br" >> /etc/ntp.conf
 RUN echo "server c.ntp.br" >> /etc/ntp.conf
@@ -27,7 +26,6 @@ RUN echo "America/Sao_Paulo" > /etc/timezone
 RUN dpkg-reconfigure -f noninteractive tzdata
 
 # Configura ssh
-RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q openssh-server
 RUN mkdir /var/run/sshd
 RUN echo 'root:12345678' |chpasswd
 RUN sed -i "s/PermitRootLogin without-password/PermitRootLogin yes/g" /etc/ssh/sshd_config
