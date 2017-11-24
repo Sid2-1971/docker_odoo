@@ -15,7 +15,7 @@ RUN apt-get -qq update \
 RUN locale-gen pt_BR.UTF-8 \
     && update-locale LANG=pt_BR.UTF-8
 
-# Install ntp e configura localizacao
+# Configura localizacao
 RUN echo "server a.ntp.br" >> /etc/ntp.conf \
     && echo "server b.ntp.br" >> /etc/ntp.conf \
     && echo "server c.ntp.br" >> /etc/ntp.conf
@@ -31,7 +31,7 @@ RUN echo 'root:12345678' |chpasswd \
     && echo "HISTTIMEFORMAT='|  $USER  |  %F  |  %H:%M:%S  |  '" >> /root/.bashrc
 
 
-# Adiciona user e baixa repositorios
+# Adiciona user "odoo" e diretórios
 RUN adduser --system --home=/opt/odoo --group odoo
 
 USER odoo
@@ -42,6 +42,7 @@ RUN mkdir /opt/odoo/addons
 #RUN mkdir /opt/odoo/local/sped
 #ADD odoo8.cfg /opt/odoo/etc/odoo8.cfg
 
+# Adiciona os repositórios
 WORKDIR /opt/odoo/
 RUN git clone https://github.com/OCA/OCB.git --depth 1 --branch 10.0 --single-branch server
 
@@ -58,7 +59,8 @@ USER root
 WORKDIR /tmp
 ADD requirements.txt /tmp/requirements.txt
 ADD wkhtmltox-0.12.1_linux-trusty-amd64.deb /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb
-RUN pip install -r /opt/odoo/server/requirements.txt \
+RUN pip install --upgrade pip \
+    && pip install -r /opt/odoo/server/requirements.txt \
     && pip install -r /opt/odoo/addons/reporting-engine/requirements.txt \
     && pip install -r /opt/odoo/addons/l10n-brazil/requirements.txt \
     && dpkg -i /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb \
@@ -71,15 +73,6 @@ RUN pip install -r /opt/odoo/server/requirements.txt \
 # Install systemd script
 #ADD systemd-odoo.conf /etc/init.d/odoo
 #RUN update-rc.d -f odoo defaults
-
-# Instalar NGinx
-#RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q nginx
-#ADD nginx-odoo /etc/nginx/sites-enabled/nginx-odoo
-#RUN rm -rf /etc/nginx/sites-enabled/default
-
-# Install supervisor
-#RUN DEBIAN_FRONTEND=noninteractive apt-get install -y -q supervisor
-#ADD supervisord.conf /etc/supervisor/conf.d/
 
 # Configura volume e port
 VOLUME ["/opt/odoo"]
