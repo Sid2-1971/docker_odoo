@@ -58,3 +58,4 @@ libc6
 locales
 git
 ntp
+openssh-server
