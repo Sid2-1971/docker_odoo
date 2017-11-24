@@ -65,7 +65,6 @@ RUN pip install -r /opt/odoo/addons/l10n-brazil/requirements.txt
 RUN dpkg -i /tmp/wkhtmltox-0.12.1_linux-trusty-amd64.deb
 RUN cp /usr/local/bin/wkhtmltopdf /usr/bin
 RUN cp /usr/local/bin/wkhtmltoimage /usr/bin
-RUN apt-get install -y npm
 RUN ln -s /usr/bin/nodejs /usr/bin/node
 RUN npm install -g less less-plugin-clean-css
 
