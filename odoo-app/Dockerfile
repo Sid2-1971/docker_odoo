@@ -9,7 +9,8 @@ ENV PASSWORD odoo
 ADD apt_prerequisito_odoo.pgks /tmp/apt_prerequisito_odoo.pgks
 RUN apt-get -qq update \
     && apt-get install -y -q $(cat /tmp/apt_prerequisito_odoo.pgks) \
-    && apt-get clean
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
 # Configura localizacao
 RUN locale-gen pt_BR.UTF-8 \
